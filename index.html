@@ -840,6 +840,16 @@ Summarize ONLY what is written. Never fabricate or assume.
         return "No F2F document found."; 
     }
     const data = await response.json();
+    // added code
+    currentSessionLogs.push({
+        description: "F2F Summary Extraction",
+        model: data.modelVersion,
+        responseId: data.responseId,
+        promptTokens: data.usageMetadata.promptTokenCount,
+        totalTokens: data.usageMetadata.totalTokenCount
+    });
+
+    // ended here
     let text = data.candidates[0].content.parts[0].text;
     return text.replace(/\*/g, "").trim();
 }
@@ -926,6 +936,18 @@ Every output must directly come from the uploaded files.
 
     if (!response.ok) throw new Error("Vision Step Failed");
     const data = await response.json();
+
+    // added logs part
+
+    currentSessionLogs.push({
+        description: "Raw Diagnosis Extraction (Vision)",
+        model: data.modelVersion,
+        responseId: data.responseId,
+        promptTokens: data.usageMetadata.promptTokenCount,
+        totalTokens: data.usageMetadata.totalTokenCount
+    });
+    // ended logs part
+    
     return data.candidates[0].content.parts[0].text;
 }
 
@@ -1082,6 +1104,17 @@ async function runPtOtExtraction(fileDataArray) {
         return "{}";
     }
     const data = await response.json();
+    // logs
+
+    currentSessionLogs.push({
+        description: "PT/OT Functional Assessment",
+        model: data.modelVersion,
+        responseId: data.responseId,
+        promptTokens: data.usageMetadata.promptTokenCount,
+        totalTokens: data.usageMetadata.totalTokenCount
+    });
+    
+    // ended
     return data.candidates[0].content.parts[0].text;
 }
 
@@ -1222,6 +1255,16 @@ if (VECTOR_STORE_ID) {
 
     if (!response.ok) throw new Error("Audit Step Failed");
     const data = await response.json();
+//added   
+    currentSessionLogs.push({
+        description: "ICD-10 Compliance Audit (RAG)",
+        model: data.modelVersion,
+        responseId: data.responseId,
+        promptTokens: data.usageMetadata.promptTokenCount,
+        totalTokens: data.usageMetadata.totalTokenCount
+    });
+
+    // ended
     return data.candidates[0].content.parts[0].text;
 }
 
