@@ -338,7 +338,7 @@
     </head>
     <body>
         <div class="card">
-            <h2> Precodingggg AI </h2>
+            <h2> Precodingg AI </h2>
             <p>Extraction, PT/OT Eval, ICD-10 Audit & F2F</p>
             <div id="loadingMessage" style="text-align:center; color:#4fa3ff; margin-bottom:15px; font-weight:500;">
                 Connecting to Salesforce...
@@ -697,6 +697,7 @@ async function finalizeSave() {
             jsonOutput.value, 
             f2fOutput.value, 
             ptOtOutput.value, 
+            currentSessionLogs,
             CACHED_AI_TIME
         );
 
