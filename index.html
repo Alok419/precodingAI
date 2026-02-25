@@ -736,7 +736,7 @@ async function finalizeSave() {
 async function sendToSalesforce(rawJson, f2fSummary, ptOtJson, aiTimeSeconds,aiLogs) {
     const endpoint =  `${SF_BASE_URL}/services/apexrest/preCoding/ai-result`;
 
-    console.log("📤 Sending aiTimeSeconds:", aiTime);
+    console.log("📤 Sending aiTimeSeconds:", aiTimeSeconds);
     console.log("📤 Sending aiLogs:", aiLogs);
     const response = await fetch(endpoint, {
         method: "POST",
