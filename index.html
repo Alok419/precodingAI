@@ -733,7 +733,7 @@ async function finalizeSave() {
 }
 
 // 1. Send Data to Custom Apex REST API
-async function sendToSalesforce(rawJson, f2fSummary, ptOtJson, aiTimeSeconds) {
+async function sendToSalesforce(rawJson, f2fSummary, ptOtJson, aiTimeSeconds,aiLogs) {
     const endpoint =  `${SF_BASE_URL}/services/apexrest/preCoding/ai-result`;
     const response = await fetch(endpoint, {
         method: "POST",
