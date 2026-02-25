@@ -699,7 +699,8 @@ async function finalizeSave() {
             f2fOutput.value, 
             ptOtOutput.value, 
             CACHED_AI_TIME,
-            currentSessionLogs
+            currentSessionLogs,
+            IS_PORTAL
         );
 
         // --- PART 2: UPLOAD FILES VIA STANDARD API ---
@@ -734,7 +735,7 @@ async function finalizeSave() {
 }
 
 // 1. Send Data to Custom Apex REST API
-async function sendToSalesforce(rawJson, f2fSummary, ptOtJson, aiTimeSeconds,aiLogs) {
+async function sendToSalesforce(rawJson, f2fSummary, ptOtJson, aiTimeSeconds,aiLogs,isPortal) {
     const endpoint =  `${SF_BASE_URL}/services/apexrest/preCoding/ai-result`;
 
     console.log("📤 Sending aiTimeSeconds:", aiTimeSeconds);
@@ -748,7 +749,8 @@ async function sendToSalesforce(rawJson, f2fSummary, ptOtJson, aiTimeSeconds,aiL
             f2fSummary: f2fSummary, 
             ptOtJson: ptOtJson, // Added PT/OT to payload
             aiTimeSeconds: aiTimeSeconds ,
-            aiLogs: aiLogs
+            aiLogs: aiLogs,
+            isPortal: isPortal
         })
     });
     if (!response.ok) throw new Error(await response.text());
