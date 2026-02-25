@@ -338,7 +338,7 @@
     </head>
     <body>
         <div class="card">
-            <h2> Precoding AI </h2>
+            <h2> Precodinnng AI </h2>
             <p>Extraction, PT/OT Eval, ICD-10 Audit & F2F</p>
             <div id="loadingMessage" style="text-align:center; color:#4fa3ff; margin-bottom:15px; font-weight:500;">
                 Connecting to Salesforce...
@@ -735,6 +735,9 @@ async function finalizeSave() {
 // 1. Send Data to Custom Apex REST API
 async function sendToSalesforce(rawJson, f2fSummary, ptOtJson, aiTimeSeconds,aiLogs) {
     const endpoint =  `${SF_BASE_URL}/services/apexrest/preCoding/ai-result`;
+
+    console.log("📤 Sending aiTimeSeconds:", aiTime);
+    console.log("📤 Sending aiLogs:", aiLogs);
     const response = await fetch(endpoint, {
         method: "POST",
         headers: { "Authorization": "Bearer " + SF_SESSION_ID, "Content-Type": "application/json" },
