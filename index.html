@@ -743,7 +743,8 @@ async function sendToSalesforce(rawJson, f2fSummary, ptOtJson, aiTimeSeconds) {
             rawJson: rawJson, 
             f2fSummary: f2fSummary, 
             ptOtJson: ptOtJson, // Added PT/OT to payload
-            aiTimeSeconds: aiTimeSeconds 
+            aiTimeSeconds: aiTimeSeconds ,
+            aiLogs: aiLogs
         })
     });
     if (!response.ok) throw new Error(await response.text());
