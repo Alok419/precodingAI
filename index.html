@@ -339,7 +339,7 @@
     </head>
     <body>
         <div class="card">
-            <h2> Precoding AI Analyzer </h2>
+            <h2> Precodingg AI Analyzer </h2>
             <p>Extraction, PT/OT Eval, ICD-10 Audit & F2F</p>
             <div id="loadingMessage" style="text-align:center; color:#4fa3ff; margin-bottom:15px; font-weight:500;">
                 Connecting to Salesforce...
@@ -422,6 +422,9 @@
    ========================================================= */
             
 let currentSessionLogs = [];
+
+let precodingStartTime = null;
+let precodingCompleteDate = null;
 let CHART_ID = null;
 let GEMINI_API_KEY = null;
 let SF_SESSION_ID = null;
@@ -572,6 +575,9 @@ function stopAutoProgress(finalValue = 100, text = "Complete") {
    ========================================================= */
 
 async function startAnalysis() {
+
+
+    precodingStartTime = new Date().toISOString();
     const analyzeBtn = document.getElementById("analyzeBtn");
     const resultArea = document.getElementById("resultArea");
     const jsonOutput = document.getElementById("jsonOutput");
@@ -682,6 +688,8 @@ async function startAnalysis() {
    ========================================================= */
 
 async function finalizeSave() {
+
+    precodingCompleteDate = new Date().toISOString();
     const saveBtn = document.getElementById("saveBtn");
     const jsonOutput = document.getElementById("jsonOutput");
     const f2fOutput = document.getElementById("f2fOutput");
@@ -699,7 +707,9 @@ async function finalizeSave() {
             f2fOutput.value, 
             ptOtOutput.value, 
             CACHED_AI_TIME,
-            currentSessionLogs
+            currentSessionLogs,
+            precodingStartTime,
+            precodingCompleteDate
         );
 
         // --- PART 2: UPLOAD FILES VIA STANDARD API ---
@@ -734,7 +744,7 @@ async function finalizeSave() {
 }
 
 // 1. Send Data to Custom Apex REST API
-async function sendToSalesforce(rawJson, f2fSummary, ptOtJson, aiTimeSeconds,aiLogs) {
+async function sendToSalesforce(rawJson, f2fSummary, ptOtJson, aiTimeSeconds,aiLogs,startTime, completeTime) {
     const endpoint =  `${SF_BASE_URL}/services/apexrest/preCoding/ai-result`;
 
     console.log("📤 Sending aiTimeSeconds:", aiTimeSeconds);
@@ -748,7 +758,9 @@ async function sendToSalesforce(rawJson, f2fSummary, ptOtJson, aiTimeSeconds,aiL
             f2fSummary: f2fSummary, 
             ptOtJson: ptOtJson, // Added PT/OT to payload
             aiTimeSeconds: aiTimeSeconds ,
-            aiLogs: aiLogs
+            aiLogs: aiLogs,
+            precodingStartTime: startTime,    
+            precodingCompleteDate: completeTime 
         })
     });
     if (!response.ok) throw new Error(await response.text());
