@@ -363,7 +363,7 @@
 
 <body>
     <div class="card">
-        <h2> Precoding AI Analyzer----------- </h2>
+        <h2> Precoding AI Analyzer </h2>
         <p>Extraction, PT/OT Eval, ICD-10 Audit & F2F</p>
         <div id="loadingMessage" style="text-align:center; color:#4fa3ff; margin-bottom:15px; font-weight:500;">
             Connecting to Salesforce...
@@ -715,9 +715,19 @@
                 // --- PART 1: SAVE JSON DATA, F2F, & PT/OT VIA APEX ---
                 saveBtn.innerText = "Saving Data...";
 
+                let payloadJson = jsonOutput.value;
+                try {
+                    const parsed = JSON.parse(jsonOutput.value);
+                    if (parsed.finalCodes) {
+                        payloadJson = JSON.stringify(parsed.finalCodes);
+                    }
+                } catch (e) {
+                    console.warn("Could not parse jsonOutput for finalCodes extraction, sending raw value.");
+                }
+
                 // We now pass rawJson, f2f, and ptOtJson
                 await sendToSalesforce(
-                    jsonOutput.value,
+                    payloadJson,
                     f2fOutput.value,
                     ptOtOutput.value,
                     CACHED_AI_TIME,
